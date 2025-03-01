@@ -1,28 +1,53 @@
-import React from "react";
+import React, { useState } from "react";
 
-//include images into your bundle
-import rigoImage from "../../img/rigo-baby.jpg";
-
+//useState when you use state
 //create your first component
 const Home = () => {
-	return (
-		<div className="text-center">
-            
+	const [inputValue, setInputValue] = useState("");
+	const [todos, setTodos] = useState([]);
 
-			<h1 className="text-center mt-5">Hello Rigo!</h1>
-			<p>
-				<img src={rigoImage} />
-			</p>
-			<a href="#" className="btn btn-success">
-				If you see this green button... bootstrap is working...
-			</a>
-			<p>
-				Made by{" "}
-				<a href="http://www.4geeksacademy.com">4Geeks Academy</a>, with
-				love!
-			</p>
-		</div>
-	);
+	//add into array -> concat
+	//delete from array -> filter
+	//update -> map
+	return (
+		<div className="container">
+			<h1>My todos</h1>
+			
+			<ul>
+				<li>
+						<input
+						type="text"
+						value={inputValue}
+						onChange={(e) => setInputValue(e.target.value)}
+						onKeyDown={(e) => {
+							if (e.key == "Enter") {
+								setTodos(todos.concat(inputValue));
+								setInputValue("");
+							}
+						}}
+						placeholder="what do you need to do?"></input>
+				</li>
+				{todos.map((item, index) => (
+
+					<li key={index}>
+						{item}{" "}
+						 <i 
+						 className="fas fa-trash-alt" 
+						 //aqui se elimina las lineas con el icono de la basura
+						 onClick={() => 
+							setTodos(
+							todos.filter(
+								(t, currentIndex) => 
+								index != currentIndex
+								)
+								)
+								}></i>
+					</li>
+				))}
+			</ul>
+			<div>{todos.length} tasks</div>
+		</div >
+	)
 };
 
 export default Home;
